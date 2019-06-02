@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <ctime>
 
-
 using namespace std; 
 
 bool gameOver; 
@@ -18,8 +17,7 @@ enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 
 eDirection dir; 
 
-void Setup() 
-{ 
+void Setup() { 
 	gameOver = false; 
 	dir = STOP; 
 	x = width / 2 - 1 ; 
@@ -29,8 +27,7 @@ void Setup()
 	score = 0; 
 } 
 
-void Draw()
-{
+void Draw(){
 	Sleep(speed);
 	system("cls");
 	//system ("clear"); 
@@ -67,11 +64,9 @@ void Draw()
 	
 	cout << "Score " << score << endl;
 }
-void Input() 
-{
+void Input() {
 	if (_kbhit()) {
-		switch (_getch())
-		{
+		switch (_getch()){
 		case 'a':
 			dir = LEFT;
 			break;
@@ -90,8 +85,7 @@ void Input()
 		}
 	}
 } 
-void Logic() 
-{
+void Logic() {
 	int prevX = tailX[0];
 	int prevY = tailY[0];
 	int prev2X, prev2Y;
@@ -105,8 +99,7 @@ void Logic()
 		prevX = prev2X;
 		prevY = prev2Y;
 	}
-	switch (dir)
-	{
+	switch (dir){
 	case LEFT:
 		x--;
 		break;
@@ -152,11 +145,9 @@ void Logic()
 	if (speed <= 100) 
 		speed = 100;
 }
-int main() 
-{ 
+int main() { 
 	Setup(); 
-	while (!gameOver) 
-	{ 
+	while (!gameOver) { 
 		Draw(); 
 		Input(); 
 		Logic(); 
