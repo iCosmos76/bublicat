@@ -51,11 +51,16 @@ public:
 	void operator=(Long l){ v = l.v; z = l.z; }
 
 	Long operator+(Long l){
-		if (z < 0 && l.z > 0)
+		if (z < 0 && l.z > 0) {
+			z = 1;
 			return l - *this;
+		}
 
-		if (z > 0 && l.z < 0)
+		if (z > 0 && l.z < 0) {
+		
+			l.z = 1;
 			return *this - l;
+		}
 
 		Long res = v.size() > l.v.size() ? *this : l;
 		l = v.size() > l.v.size() ? l : *this;
@@ -90,7 +95,7 @@ public:
 		Long res;
 		if (v.size() == l.v.size()){
 			int i;
-			for (i = 0; i < v.size(); i++)
+			for (i = v.size() - 1; i >= 0; i--)
 				if (v[i] != l.v[i])
 					break;
 
@@ -132,6 +137,9 @@ public:
 
 		while (res.v.size() > 1 && res.v[res.v.size() - 1] == 0)
 			res.v.pop_back();
+
+		if (res.v.size() == 1 && res.v[0] == 0)
+			res.z = 1;
 
 		return res;
 	}
@@ -177,9 +185,41 @@ public:
 		return res;
 	}
 
-	Long operator/(Long l)
-	{
+	Long operator/(Long l){
+		Long res;
+		res.null();
 
+		res.z = 1;
+		if (v.size() < l.v.size())
+			return res;
+
+		res.v.erase(res.v.cbegin());
+
+		Long r = *this;
+		Long l0 = l;
+
+		r.z = l0.z = 1;
+
+		while (r.v.size() >= l0.v.size())
+			l0.null();
+
+		while (l.v.size() != l0.v.size()){
+			l0.v.erase(l0.v.cbegin());
+
+			int k = -1;
+			while (r.z > 0){
+				r = r - l0;
+				k++;
+			}
+
+			r = r + l0;
+			res.v.insert(res.v.cbegin(), k);
+		}
+
+		while (res.v[res.v.size() - 1] == 0)
+			res.v.pop_back();
+
+		return res;
 	}
 };
 
