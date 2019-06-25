@@ -19,6 +19,18 @@ enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 
 eDirection dir;
 
+void HideCursor() {
+	CONSOLE_CURSOR_INFO cursor_info = { 1, 0 };
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
+}
+
+void Gotoxy(int x, int y) {
+	COORD pos;
+	pos.X = x - 1;
+	pos.Y = y - 1;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
 void Setup() {
 	gameOver = false;
 	dir = STOP;
@@ -30,9 +42,11 @@ void Setup() {
 }
 
 void Draw() {
+	
+	system("color f0");
 	Sleep(speed);
-	system("cls");
-	//system ("clear"); 
+	HideCursor();
+	Gotoxy(1, 1);
 	cout << endl << endl;
 	cout << "If you want to exit, please click X";
 	cout << endl << endl;
@@ -53,8 +67,8 @@ void Draw() {
 				bool print = false;
 				for (int k = 0; k < nTail; k++) {
 					if (tailX[k] == j && tailY[k] == i) {
-						print = true;
 						cout << "o";
+						print = true;
 					}
 				}
 				if (!print)
@@ -154,14 +168,14 @@ void Logic() {
 	}
 
 	if (speed <= 100)
-		speed = 100;
+		speed = 100;	
+
 }
 int main() {
 	Setup();
-	while (!gameOver) {
+	while (!gameOver) {	
 		Draw();
 		Input();
 		Logic();
 	}
-	return 0;
 }
